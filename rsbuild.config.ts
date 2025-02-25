@@ -7,5 +7,5 @@ export default defineConfig({
     // Please replace <REPO_NAME> with the repository name.
     // For example, "/my-project/"
     assetPrefix: '/react_todo/',
-  }
+  },
 });

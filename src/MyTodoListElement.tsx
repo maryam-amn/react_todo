@@ -1,9 +1,7 @@
-
-
-const MyTodoListElement = ({myTodoText, }: { myTodoText: string, }) => {
+const MyTodoListElement = ({ myTodoText }: { myTodoText: string }) => {
   return (
     <>
-      <li >
+      <li>
         <div>
           {myTodoText}
           <time> 2023/03/02 </time>

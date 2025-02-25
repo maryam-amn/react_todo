@@ -3,10 +3,7 @@ import './App.css';
 const App = () => {
   return (
     <>
-
-        <h1 className="content"> To do list app</h1>
-
-
+      <h1 className="content"> My To do list </h1>
     </>
   );
 };

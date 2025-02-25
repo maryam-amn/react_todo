@@ -1,12 +1,11 @@
-
 export const TodoForm = () => {
   return (
     <>
       <div className="div-background-input">
         <form>
           <button> Add a to do</button>
-          <input placeholder="Enter a to do " />
-          <input type={'date'}></input>
+          <input type="text" placeholder="Enter a to do " />
+          <input type="date"></input>
           <select>
             <option> Sort</option>
             <option> due date</option>
@@ -19,5 +18,3 @@ export const TodoForm = () => {
     </>
   );
 };
-
-
