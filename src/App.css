@@ -1,8 +1,7 @@
 body {
   margin: 0;
   color: #fff;
-  font-family: Caveat;
-  background-image: linear-gradient(to bottom, #020917, #09102e);
+  background-color: #494560;
   min-height: 100vh;
   line-height: 1.1;
 }
@@ -12,30 +11,26 @@ body {
   text-align: center;
   flex-direction: column;
   justify-content: center;
-font-family: Helvetica, sans-serif;
-  font-family: "Caveat";
-
+  font-family: cursive;
+  font-style: italic;
 }
 
-
-
-
-.div-background-input{
+.div-background-input {
   display: flex;
   justify-content: center;
   gap: 10px;
 }
 
-form{
+form {
   display: flex;
-  background-color: #142f4c;
+  background-color: #625d93;
   gap: 15px;
   padding: 10px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
 }
-ul{
+ul {
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -45,20 +40,21 @@ ul{
 .test {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   justify-content: center;
   align-items: center;
-  background-color: #263d5c;
+  background-color: #5a5877;
   border-radius: 10px;
   width: 30%;
   padding-bottom: 15px;
   padding-top: 15px;
+  box-shadow: 10px 10px 10px 5px #353447;
 }
 
-li{
+li {
   display: flex;
   width: 350px;
-  background-color: #122d49;
+  background-color: rgba(40, 39, 76, 0.51);
   padding: 10px;
   border-radius: 10px;
   list-style: circle;
