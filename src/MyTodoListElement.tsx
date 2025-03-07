@@ -1,14 +1,31 @@
-const MyTodoListElement = ({ myTodoText }: { myTodoText: string }) => {
+const MyTodoListElement = ({
+  myTodoText,
+  date,
+}: {
+  myTodoText: string;
+  date: string;
+}) => {
   return (
     <>
-      <li>
-        <div>
-          {myTodoText}
-          <time> 2023/03/02 </time>
-        </div>
-
-        <button>delete</button>
-      </li>
+      <div className="style">
+        <li>
+          <div className="item">
+            {myTodoText}
+            <time>{date} </time>
+          </div>
+          <div className="button-img-space">
+            <input type="checkbox"></input>
+            <button className="button-img">
+              <img
+                width="30"
+                height="30"
+                src="https://img.icons8.com/sf-regular/50/FFFFFF/trash.png"
+                alt="trash"
+              />{' '}
+            </button>
+          </div>
+        </li>
+      </div>
     </>
   );
 };

@@ -1,24 +1,26 @@
 import MyTodoListElement from './MyTodoListElement.tsx';
+import { Todo } from './interface.tsx';
 
-export const TodList = () => {
-  const todoList = [
-    'Todo 1',
-    'Todo 2',
-    'Todo 3 ',
-    'Todo 4',
-    'Todo 5',
-    'Essaie',
-  ];
-
+const TodoList = ({ todoList }: { todoList: Todo[] }) => {
   return (
     <>
-      <ul>
-        <div className="test">
-          {todoList.map((todo, item) => (
-            <MyTodoListElement myTodoText={todo} key={item} />
-          ))}
-        </div>
-      </ul>
+      <div>
+        <ul>
+          <div className="my-todo-list-style">
+            {todoList.map((todo) => (
+              <MyTodoListElement
+                myTodoText={todo.title}
+                date={todo.due_date}
+                key={todo.id}
+              />
+            ))}
+          </div>
+        </ul>
+      </div>
     </>
   );
+
+  // TodList.tsx
 };
+
+export default TodoList;
