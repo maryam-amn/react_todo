@@ -55,6 +55,7 @@ ul {
 li {
   display: flex;
   width: 350px;
+  height: 30px;
   background-color: rgba(40, 39, 76, 0.51);
   padding: 10px;
   border-radius: 10px;
@@ -72,4 +73,8 @@ li div {
   border: none;
   background: transparent;
   cursor: pointer;
+}
+.button-img-space {
+  display: flex;
+  flex-direction: row;
 }

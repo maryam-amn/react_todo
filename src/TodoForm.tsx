@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
 export const TodoForm = ({
-  ListTodo,
   addTodo,
 }: {
-  ListTodo: string[];
-  addTodo: (addToList: string) => void;
+  addTodo: (addToList: string, addDate: string) => void;
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [date, setDate] = useState('');
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -15,35 +14,43 @@ export const TodoForm = ({
 
   const addNewTodo = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    addTodo(inputValue);
-
+    addTodo(inputValue, date);
     setInputValue('');
-
-    console.log(ListTodo);
+    setDate('');
   };
 
-  return (
-    <>
-      <div className="div-background-input">
-        <form onSubmit={addNewTodo}>
-          <button> Add a to do</button>
-          <input
-            type="text"
-            placeholder="Enter a to do "
-            onChange={handleInput}
-            value={inputValue}
-          />
-          <input type="date"></input>
-          <select>
-            <option> Sort</option>
-            <option> due date</option>
-            <option> name</option>
-            <option> done</option>
-            <option> undone</option>
-          </select>
-        </form>
-      </div>
-    </>
-  );
+  {
+    const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setDate(e.target.value);
+    };
+
+    return (
+      <>
+        <div className="div-background-input">
+          <form onSubmit={addNewTodo}>
+            <button> Add a to do</button>
+            <input
+              type="text"
+              placeholder="Enter a to do "
+              onChange={handleInput}
+              value={inputValue}
+            />
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={handleChangeDate}
+            ></input>
+            <select>
+              <option> Sort</option>
+              <option> due date</option>
+              <option> name</option>
+              <option> done</option>
+              <option> undone</option>
+            </select>
+          </form>
+        </div>
+      </>
+    );
+  }
 };
