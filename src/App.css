@@ -62,7 +62,10 @@ li {
   list-style: circle;
   gap: 200px;
 }
-
+.item {
+  display: flex;
+  width: 30%;
+}
 li div {
   display: flex;
   flex-direction: column;

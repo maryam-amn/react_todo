@@ -7,11 +7,11 @@ const TodoList = ({ todoList }: { todoList: Todo[] }) => {
       <div>
         <ul>
           <div className="my-todo-list-style">
-            {todoList.map((todo, item) => (
+            {todoList.map((todo) => (
               <MyTodoListElement
                 myTodoText={todo.title}
                 date={todo.due_date}
-                key={item}
+                key={todo.id}
               />
             ))}
           </div>
