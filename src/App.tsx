@@ -2,13 +2,14 @@ import './App.css';
 import { TodoForm } from './TodoForm.tsx';
 import { useEffect, useState } from 'react';
 import TodoList from './TodoList.tsx';
-import { Todo } from './interface.tsx';
-import { fetchPost } from './fetchPost.tsx';
+import { Todo } from './Todo.ts';
+import { fetchPost } from './Fetch_File/fetchPost.tsx';
+import { fetchData } from './Fetch_File/fetchGet.tsx';
 
 const App = () => {
   const [listTodo, setlistTodo] = useState<Todo[]>([]);
 
-  const addToMyListAndToTheAPI = (content: string, dueDate: string) => {
+  const addToMyListAndToTheAPI = async (content: string, dueDate: string) => {
     const newList: Todo = {
       title: content,
       due_date: dueDate,
@@ -17,27 +18,31 @@ const App = () => {
       done: false,
     };
 
-    fetchPost(content, dueDate);
+    await fetchPost(content, dueDate);
     setlistTodo([...listTodo, newList]);
   };
+  const deleteFromMyList = (todo: Todo) => {
+    setlistTodo((todos) => todos.filter((t) => t.id !== todo.id));
+  };
+
   // Fetch Get
+
   useEffect(() => {
-    fetch('https://api.todos.in.jt-lab.ch/todos')
-      .then((response) => response.json())
-      .then((data) => {
-        setlistTodo(data);
-      })
-      .catch((error) => console.error('Error:', error));
+    const getTodoFromTheAPI = async () => {
+      await fetchData(setlistTodo);
+    };
+    getTodoFromTheAPI().then((r) => console.log(r));
   }, []);
 
   {
     console.log(listTodo);
   }
+
   return (
     <>
       <h1 className="content"> My To do list </h1>
       <TodoForm addTodo={addToMyListAndToTheAPI} />
-      <TodoList todoList={listTodo} />
+      <TodoList todoList={listTodo} deleteTodo={deleteFromMyList} />
     </>
   );
 };

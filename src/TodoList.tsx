@@ -1,7 +1,13 @@
 import MyTodoListElement from './MyTodoListElement.tsx';
-import { Todo } from './interface.tsx';
+import { Todo } from './Todo.ts';
 
-const TodoList = ({ todoList }: { todoList: Todo[] }) => {
+const TodoList = ({
+  todoList,
+  deleteTodo,
+}: {
+  todoList: Todo[];
+  deleteTodo: (todo: Todo) => void;
+}) => {
   return (
     <>
       <div>
@@ -11,6 +17,8 @@ const TodoList = ({ todoList }: { todoList: Todo[] }) => {
               <MyTodoListElement
                 myTodoText={todo.title}
                 date={todo.due_date}
+                todo={todo}
+                deleteTodo={deleteTodo}
                 key={todo.id}
               />
             ))}
