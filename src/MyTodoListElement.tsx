@@ -1,5 +1,7 @@
 import { Todo } from './Todo.ts';
 import { fetchDelete } from './Fetch_File/fetchDelete.tsx';
+import React, { useEffect, useState } from 'react';
+import { fetchPatch } from './Fetch_File/fetchPatch.tsx';
 
 const MyTodoListElement = ({
   myTodoText,
@@ -16,6 +18,20 @@ const MyTodoListElement = ({
     await fetchDelete(todo);
     deleteTodo(todo);
   };
+  const [isChecked, setIsChecked] = useState<boolean>(todo.done);
+
+  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
+    console.log(isChecked);
+  };
+
+  useEffect(() => {
+
+    const updateTodoStatusDone = async () => {
+      await fetchPatch(todo, isChecked);
+    };
+    updateTodoStatusDone().then((r) => console.log(r));
+  }, [isChecked, fetchPatch, todo]);
 
   return (
     <>
@@ -26,7 +42,11 @@ const MyTodoListElement = ({
             <time>{date} </time>
           </div>
           <div className="button-img-space">
-            <input type="checkbox"></input>
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleChangeDate}
+            ></input>
             <button onClick={() => handleDelete()} className="button-img">
               <img
                 width="30"
