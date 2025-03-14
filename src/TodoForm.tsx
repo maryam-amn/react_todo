@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 export const TodoForm = ({
   addTodo,
+  sorting,
 }: {
   addTodo: (addToList: string, addDate: string) => void;
+  sorting: (sortType: string) => void;
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [date, setDate] = useState('');
@@ -41,12 +43,11 @@ export const TodoForm = ({
               value={date}
               onChange={handleChangeDate}
             ></input>
-            <select>
-              <option> Sort</option>
-              <option> due date</option>
-              <option> name</option>
-              <option> done</option>
-              <option> undone</option>
+            <select onChange={(e) => sorting(e.target.value)}>
+              <option value="due-date"> due date</option>
+              <option value="name"> name (A- Z)</option>
+              <option value="done"> done</option>
+              <option value="undone"> undone</option>
             </select>
           </form>
         </div>
