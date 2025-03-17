@@ -8,7 +8,7 @@ import { fetchData } from './Fetch_File/fetchGet.tsx';
 
 const App = () => {
   const [listTodo, setlistTodo] = useState<Todo[]>([]);
-  const [sorting, setSorting] = useState<string>('due-date');
+  const [sorting, setSorting] = useState<string>('name');
   let sortedTodos: Todo[];
 
   const addToMyListAndToTheAPI = async (content: string, dueDate: string) => {
@@ -27,14 +27,13 @@ const App = () => {
     setlistTodo((todos) => todos.filter((t) => t.id !== todo.id));
   };
 
-  // Fetch Get
-
   useEffect(() => {
     const getTodoFromTheAPI = async () => {
       await fetchData(setlistTodo);
     };
     getTodoFromTheAPI().then((r) => console.log(r));
   }, []);
+  console.log(listTodo);
 
   const changeSorting = (sortType: string) => {
     setSorting(sortType);
@@ -54,9 +53,6 @@ const App = () => {
     sortedTodos = sortedTodos.filter((todo) => !todo.done);
   } else {
     sortedTodos = [...listTodo];
-  }
-  {
-    console.log(listTodo);
   }
   return (
     <>

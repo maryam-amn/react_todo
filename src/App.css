@@ -60,11 +60,17 @@ li {
   padding: 10px;
   border-radius: 10px;
   list-style: circle;
-  gap: 200px;
+  gap: 150px;
 }
 .item {
   display: flex;
   width: 30%;
+}
+.item input {
+  border: transparent;
+  background-color: transparent;
+  color: #fff;
+  font-size: small;
 }
 li div {
   display: flex;

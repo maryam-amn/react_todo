@@ -27,8 +27,6 @@ const TodoList = ({
       </div>
     </>
   );
-
-  // TodList.tsx
 };
 
 export default TodoList;
