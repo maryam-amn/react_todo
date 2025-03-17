@@ -20,12 +20,12 @@ export const TodoForm = ({
     setInputValue('');
     setDate('');
   };
-
   {
     const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDate(e.target.value);
     };
 
+    console.log();
     return (
       <>
         <div className="div-background-input">
@@ -44,8 +44,9 @@ export const TodoForm = ({
               onChange={handleChangeDate}
             ></input>
             <select onChange={(e) => sorting(e.target.value)}>
-              <option value="due-date"> due date</option>
               <option value="name"> name (A- Z)</option>
+              <option value="due-date"> due date</option>
+
               <option value="done"> done</option>
               <option value="undone"> undone</option>
             </select>

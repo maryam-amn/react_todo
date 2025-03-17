@@ -19,33 +19,45 @@ const MyTodoListElement = ({
     deleteTodo(todo);
   };
   const [isChecked, setIsChecked] = useState<boolean>(todo.done);
+  const [EditInputValue, setEditInputValue] = useState<string>(myTodoText);
+  const [EditDateValue, setEditDateValue] = useState<string>(date);
 
-  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNewDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditDateValue(e.target.value);
+  };
+
+  const handleIsChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
     console.log(isChecked);
   };
 
-  useEffect(() => {
+  const handleNewInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditInputValue(e.target.value);
+    console.log(EditInputValue);
+  };
 
+  useEffect(() => {
     const updateTodoStatusDone = async () => {
-      await fetchPatch(todo, isChecked);
+      await fetchPatch(todo, isChecked, EditInputValue, EditDateValue);
     };
+
     updateTodoStatusDone().then((r) => console.log(r));
-  }, [isChecked, fetchPatch, todo]);
+  }, [isChecked, todo, EditInputValue, EditDateValue]);
 
   return (
     <>
       <div className="style">
         <li>
           <div className="item">
-            {myTodoText}
-            <time>{date} </time>
+            <input value={EditInputValue} onInput={handleNewInput} />
+
+            <input type="date" value={EditDateValue} onChange={handleNewDate} />
           </div>
           <div className="button-img-space">
             <input
               type="checkbox"
               checked={isChecked}
-              onChange={handleChangeDate}
+              onChange={handleIsChecked}
             ></input>
             <button onClick={() => handleDelete()} className="button-img">
               <img
