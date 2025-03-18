@@ -20,13 +20,15 @@ export const TodoForm = ({
     e.preventDefault();
     if (inputValue.length === 0) {
       seterrorInput(true);
+
     } else {
       addTodo(inputValue, date);
       setInputValue('');
       setDate('');
+      seterrorInput(false);
     }
   };
-  {
+
     const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDate(e.target.value);
     };
@@ -65,5 +67,5 @@ export const TodoForm = ({
         )}
       </>
     );
-  }
+
 };

@@ -26,6 +26,7 @@ const MyTodoListElement = ({
     try {
       await fetchDelete(todo);
       deleteTodo(todo);
+      setErrorDeleteMessage(false)
     } catch {
       setErrorDeleteMessage(true);
     }
@@ -49,6 +50,7 @@ const MyTodoListElement = ({
     const updateTodoStatusDone = async () => {
       try {
         await fetchPatch(todo, isChecked, EditInputValue, EditDateValue);
+        setErrorMessageUpdate(false);
       } catch {
         setErrorMessageUpdate(true);
       }

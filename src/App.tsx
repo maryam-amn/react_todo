@@ -25,6 +25,7 @@ const App = () => {
       };
       await fetchPost(content, dueDate);
       setlistTodo([...listTodo, newList]);
+      setmessageErrorAddToDo(false);
     } catch {
       setmessageErrorAddToDo(true);
     }
