@@ -5,23 +5,30 @@ import TodoList from './TodoList.tsx';
 import { Todo } from './Todo.ts';
 import { fetchPost } from './Fetch_File/fetchPost.tsx';
 import { fetchData } from './Fetch_File/fetchGet.tsx';
+import ErrorComponent from './ErrorComponent.tsx';
 
 const App = () => {
   const [listTodo, setlistTodo] = useState<Todo[]>([]);
   const [sorting, setSorting] = useState<string>('name');
+  const [messageErrorAddToDo, setmessageErrorAddToDo] =
+    useState<boolean>(false);
   let sortedTodos: Todo[];
 
   const addToMyListAndToTheAPI = async (content: string, dueDate: string) => {
-    const newList: Todo = {
-      title: content,
-      due_date: dueDate,
-      content: content,
-      id: content,
-      done: false,
-    };
-
-    await fetchPost(content, dueDate);
-    setlistTodo([...listTodo, newList]);
+    try {
+      const newList: Todo = {
+        title: content,
+        due_date: dueDate,
+        content: content,
+        id: content,
+        done: false,
+      };
+      await fetchPost(content, dueDate);
+      setlistTodo([...listTodo, newList]);
+      setmessageErrorAddToDo(false);
+    } catch {
+      setmessageErrorAddToDo(true);
+    }
   };
   const deleteFromMyList = (todo: Todo) => {
     setlistTodo((todos) => todos.filter((t) => t.id !== todo.id));
@@ -38,7 +45,6 @@ const App = () => {
   const changeSorting = (sortType: string) => {
     setSorting(sortType);
   };
-  // Sort the list
   if (sorting === 'due-date') {
     sortedTodos = [...listTodo].sort((a, b) => {
       return new Date(b.due_date).getTime() - new Date(a.due_date).getTime();
@@ -57,7 +63,13 @@ const App = () => {
   return (
     <>
       <h1 className="content"> My To do list </h1>
+
       <TodoForm addTodo={addToMyListAndToTheAPI} sorting={changeSorting} />
+      {messageErrorAddToDo && (
+        <ErrorComponent
+          message={'We cannot add your to-do, please  check your network '}
+        />
+      )}
       <TodoList todoList={sortedTodos} deleteTodo={deleteFromMyList} />
     </>
   );

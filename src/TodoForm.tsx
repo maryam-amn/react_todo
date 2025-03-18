@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ErrorComponent from './ErrorComponent.tsx';
 
 export const TodoForm = ({
   addTodo,
@@ -9,6 +10,7 @@ export const TodoForm = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [date, setDate] = useState('');
+  const [errorInput, seterrorInput] = useState(false);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -16,11 +18,17 @@ export const TodoForm = ({
 
   const addNewTodo = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addTodo(inputValue, date);
-    setInputValue('');
-    setDate('');
+    if (inputValue.length === 0) {
+      seterrorInput(true);
+
+    } else {
+      addTodo(inputValue, date);
+      setInputValue('');
+      setDate('');
+      seterrorInput(false);
+    }
   };
-  {
+
     const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
       setDate(e.target.value);
     };
@@ -52,7 +60,12 @@ export const TodoForm = ({
             </select>
           </form>
         </div>
+        {errorInput && (
+          <ErrorComponent
+            message={'We cannot add your to-do, please  enter a valid todo '}
+          />
+        )}
       </>
     );
-  }
+
 };
