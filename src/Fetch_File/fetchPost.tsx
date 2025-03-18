@@ -6,7 +6,7 @@ export async function fetchPost(title: string, due_date: string) {
     method: 'POST',
     body: JSON.stringify({
       title: title,
-      due_date: due_date,
+      due_date: due_date || null,
     }),
     headers: myHeaders,
   });
