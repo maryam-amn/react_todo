@@ -8,19 +8,28 @@ const MyTodoListElement = ({
   date,
   todo,
   deleteTodo,
+  setErrorDeleteMessage,
+  setErrorMessageUpdate,
 }: {
   myTodoText: string;
   date: string;
   todo: Todo;
   deleteTodo: (todo: Todo) => void;
+  setErrorDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMessageUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const handleDelete = async () => {
-    await fetchDelete(todo);
-    deleteTodo(todo);
-  };
   const [isChecked, setIsChecked] = useState<boolean>(todo.done);
   const [EditInputValue, setEditInputValue] = useState<string>(myTodoText);
   const [EditDateValue, setEditDateValue] = useState<string>(date);
+
+  const handleDelete = async () => {
+    try {
+      await fetchDelete(todo);
+      deleteTodo(todo);
+    } catch {
+      setErrorDeleteMessage(true);
+    }
+  };
 
   const handleNewDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditDateValue(e.target.value);
@@ -38,18 +47,26 @@ const MyTodoListElement = ({
 
   useEffect(() => {
     const updateTodoStatusDone = async () => {
-      await fetchPatch(todo, isChecked, EditInputValue, EditDateValue);
+      try {
+        await fetchPatch(todo, isChecked, EditInputValue, EditDateValue);
+      } catch {
+        setErrorMessageUpdate(true);
+      }
     };
 
     updateTodoStatusDone().then((r) => console.log(r));
-  }, [isChecked, todo, EditInputValue, EditDateValue]);
+  }, [isChecked, todo, EditInputValue, EditDateValue, setErrorMessageUpdate]);
 
   return (
     <>
       <div className="style">
         <li>
           <div className="item">
-            <input value={EditInputValue} onInput={handleNewInput} />
+            <input
+              type="text"
+              value={EditInputValue}
+              onInput={handleNewInput}
+            />
 
             <input type="date" value={EditDateValue} onChange={handleNewDate} />
           </div>

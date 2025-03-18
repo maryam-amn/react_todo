@@ -16,6 +16,7 @@ export const TodoForm = ({
 
   const addNewTodo = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     addTodo(inputValue, date);
     setInputValue('');
     setDate('');
