@@ -15,8 +15,8 @@ const MyTodoListElement = ({
   date: string;
   todo: Todo;
   deleteTodo: (todo: Todo) => void;
-  setErrorDeleteMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  setErrorMessageUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorDeleteMessage: (message: boolean) => void;
+  setErrorMessageUpdate: (message: boolean) => void;
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(todo.done);
   const [EditInputValue, setEditInputValue] = useState<string>(myTodoText);
@@ -26,7 +26,7 @@ const MyTodoListElement = ({
     try {
       await fetchDelete(todo);
       deleteTodo(todo);
-      setErrorDeleteMessage(false)
+      setErrorDeleteMessage(false);
     } catch {
       setErrorDeleteMessage(true);
     }

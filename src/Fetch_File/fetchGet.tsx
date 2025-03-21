@@ -1,6 +1,4 @@
-import { Todo } from '../Todo.ts';
-
-export async function fetchData(setlistTodo: (todos: Todo[]) => void) {
+export async function fetchData(setlistTodo: (todos: []) => void) {
   fetch('https://api.todos.in.jt-lab.ch/todos')
     .then((response) => response.json())
     .then((data) => {

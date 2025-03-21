@@ -20,7 +20,6 @@ export const TodoForm = ({
     e.preventDefault();
     if (inputValue.length === 0) {
       seterrorInput(true);
-
     } else {
       addTodo(inputValue, date);
       setInputValue('');
@@ -29,43 +28,42 @@ export const TodoForm = ({
     }
   };
 
-    const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setDate(e.target.value);
-    };
+  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
 
-    console.log();
-    return (
-      <>
-        <div className="div-background-input">
-          <form onSubmit={addNewTodo}>
-            <button> Add a to do</button>
-            <input
-              type="text"
-              placeholder="Enter a to do "
-              onChange={handleInput}
-              value={inputValue}
-            />
-            <input
-              type="date"
-              id="date"
-              value={date}
-              onChange={handleChangeDate}
-            ></input>
-            <select onChange={(e) => sorting(e.target.value)}>
-              <option value="name"> name (A- Z)</option>
-              <option value="due-date"> due date</option>
-
-              <option value="done"> done</option>
-              <option value="undone"> undone</option>
-            </select>
-          </form>
-        </div>
-        {errorInput && (
-          <ErrorComponent
-            message={'We cannot add your to-do, please  enter a valid todo '}
+  console.log();
+  return (
+    <>
+      <div className="div-background-input">
+        <form onSubmit={addNewTodo}>
+          <button> Add a to do</button>
+          <input
+            type="text"
+            placeholder="Enter a to do "
+            onChange={handleInput}
+            value={inputValue}
           />
-        )}
-      </>
-    );
+          <input
+            type="date"
+            id="date"
+            value={date}
+            onChange={handleChangeDate}
+          ></input>
+          <select onChange={(e) => sorting(e.target.value)}>
+            <option value="name"> name (A- Z)</option>
+            <option value="due-date"> due date</option>
 
+            <option value="done"> done</option>
+            <option value="undone"> undone</option>
+          </select>
+        </form>
+      </div>
+      {errorInput && (
+        <ErrorComponent
+          message={'We cannot add your to-do, please  enter a valid todo '}
+        />
+      )}
+    </>
+  );
 };
