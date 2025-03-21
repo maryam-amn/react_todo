@@ -5,28 +5,20 @@ type UseTodoStore = {
   list: Todo[];
   addToMyList: (todo: Todo) => void;
   removeFromMyList: (id: Todo) => void;
-  getAllMyListFromGet: (todo: []) => void;
+  getAllMyListFromGet: (todos: Todo[]) => void;
   sort: string;
   ChangeSort: (sort: string) => void;
-  addErrormessage: boolean;
-  updateErrorMessage: boolean;
-  deleteErrormessage: boolean;
-  AddMessage: (message: boolean) => void;
-  UpdateMessage: (message: boolean) => void;
-  DeleteMessage: (message: boolean) => void;
 };
 
 export const useTodoStore = create<UseTodoStore>((set) => ({
   list: [],
   sort: 'name',
-  addErrormessage: false,
-  updateErrorMessage: false,
-  deleteErrormessage: false,
-  addToMyList: (todo: Todo) =>
+
+  addToMyList: (todo) =>
     set((state) => ({
       list: [...state.list, todo],
     })),
-  getAllMyListFromGet: (todo: []) =>
+  getAllMyListFromGet: (todo: Todo[]) =>
     set(() => ({
       list: todo,
     })),
@@ -38,19 +30,4 @@ export const useTodoStore = create<UseTodoStore>((set) => ({
     set(() => ({
       sort: sort,
     })),
-
-  AddMessage: (message: boolean) =>
-    set({
-      addErrormessage: message,
-    }),
-
-  UpdateMessage: (message: boolean) =>
-    set({
-      updateErrorMessage: message,
-    }),
-
-  DeleteMessage: (message: boolean) =>
-    set({
-      deleteErrormessage: message,
-    }),
 }));
