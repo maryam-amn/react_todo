@@ -1,63 +1,90 @@
 import { Todo } from './Todo.ts';
 import { fetchDelete } from './Fetch_File/fetchDelete.tsx';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchPatch } from './Fetch_File/fetchPatch.tsx';
+import { useTodoStore } from './useTodoStore.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-const MyTodoListElement = ({
-  myTodoText,
-  date,
-  todo,
-  deleteTodo,
-  setErrorDeleteMessage,
-  setErrorMessageUpdate,
-}: {
-  myTodoText: string;
-  date: string;
-  todo: Todo;
-  deleteTodo: (todo: Todo) => void;
-  setErrorDeleteMessage: (message: boolean) => void;
-  setErrorMessageUpdate: (message: boolean) => void;
-}) => {
+const MyTodoListElement = ({ todo }: { todo: Todo }) => {
   const [isChecked, setIsChecked] = useState<boolean>(todo.done);
-  const [EditInputValue, setEditInputValue] = useState<string>(myTodoText);
-  const [EditDateValue, setEditDateValue] = useState<string>(date);
+  const [EditDateValue, setEditDateValue] = useState<string>(todo.due_date);
+  const [todoTitle, setTodoTitle] = useState(todo.title);
+  const errorMessage = useTodoStore((state) => state.errormessage);
+
+  useEffect(() => {
+    setIsChecked(todo.done);
+    setEditDateValue(todo.due_date);
+    setTodoTitle(todo.title);
+  }, [todo]);
+
+  const { removeFromMyList, updateTodo } = useTodoStore(
+    useShallow((state) => ({
+      removeFromMyList: state.removeFromMyList,
+      updateTodo: state.updateTodo,
+    })),
+  );
 
   const handleDelete = async () => {
     try {
       await fetchDelete(todo);
-      deleteTodo(todo);
-      setErrorDeleteMessage(false);
+      removeFromMyList(todo);
+      errorMessage(null);
     } catch {
-      setErrorDeleteMessage(true);
+      errorMessage('we can not delete your todo, check your network ');
     }
   };
 
-  const handleNewDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditDateValue(e.target.value);
-  };
-
-  const handleIsChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
-    console.log(isChecked);
-  };
-
-  const handleNewInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditInputValue(e.target.value);
-    console.log(EditInputValue);
-  };
-
-  useEffect(() => {
-    const updateTodoStatusDone = async () => {
+  const handleNewDate = async () => {
+    if (EditDateValue.length > 0) {
       try {
-        await fetchPatch(todo, isChecked, EditInputValue, EditDateValue);
-        setErrorMessageUpdate(false);
+        const newTodo: Todo = {
+          ...todo,
+          due_date: todoTitle,
+        };
+        await fetchPatch(newTodo);
+        updateTodo(newTodo);
       } catch {
-        setErrorMessageUpdate(true);
+        setEditDateValue(todo.due_date);
+        errorMessage('we can not change the date, check your network');
       }
-    };
+    }
+  };
 
-    updateTodoStatusDone().then((r) => console.log(r));
-  }, [isChecked, todo, EditInputValue, EditDateValue, setErrorMessageUpdate]);
+  const handleIsChecked = async () => {
+    try {
+      const newTodo: Todo = {
+        ...todo,
+        done: isChecked,
+      };
+      await fetchPatch(newTodo);
+      updateTodo(newTodo);
+      errorMessage(null);
+    } catch (error) {
+      // The patch fails
+      console.log(error);
+      setIsChecked(todo.done);
+      errorMessage('we can not checked you todo, check you network');
+    }
+  };
+
+  const handleNewInput = async () => {
+    if (todoTitle.length > 0) {
+      try {
+        const newTodo: Todo = {
+          ...todo,
+          title: todoTitle,
+        };
+        await fetchPatch(newTodo);
+        updateTodo(newTodo);
+        errorMessage(null);
+      } catch {
+        setTodoTitle(todo.title);
+        errorMessage('we can not update you todo, check you network ');
+      }
+    } else {
+      errorMessage('please write a valid todo');
+    }
+  };
 
   return (
     <>
@@ -66,17 +93,24 @@ const MyTodoListElement = ({
           <div className="item">
             <input
               type="text"
-              value={EditInputValue}
-              onInput={handleNewInput}
+              value={todoTitle}
+              onChange={(e) => setTodoTitle(e.target.value)}
+              onBlur={handleNewInput}
             />
-
-            <input type="date" value={EditDateValue} onChange={handleNewDate} />
+            <input
+              type="date"
+              value={EditDateValue || ''}
+              onChange={(e) => setEditDateValue(e.target.value)}
+              onBlur={handleNewDate}
+            />
           </div>
           <div className="button-img-space">
             <input
               type="checkbox"
               checked={isChecked}
-              onChange={handleIsChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+              onSelect={handleIsChecked}
+              onBlur={handleIsChecked}
             ></input>
             <button onClick={() => handleDelete()} className="button-img">
               <img

@@ -15,11 +15,13 @@ const App = () => {
     };
     getTodoFromTheAPI().then((r) => console.log(r));
   }, [getFetch]);
+  const error = useTodoStore((state) => state.error);
 
   return (
     <>
       <h1 className="content"> My To do list </h1>
       <TodoForm />
+      {error && <h3 className={'error'}>{error}</h3>}
       <TodoList />
     </>
   );

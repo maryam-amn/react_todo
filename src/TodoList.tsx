@@ -1,13 +1,9 @@
 import MyTodoListElement from './MyTodoListElement.tsx';
 import { Todo } from './Todo.ts';
-import ErrorComponent from './ErrorComponent.tsx';
-import { useState } from 'react';
+
 import { useTodoStore } from './useTodoStore.ts';
 
 const TodoList = () => {
-  const [errorMessageUpdate, setmessageErrorUpdate] = useState<boolean>(false);
-  const [errorMessageDelete, setmessageErrorDelete] = useState<boolean>(false);
-
   let sortedTodos: Todo[];
 
   const sort = useTodoStore((state) => state.sort);
@@ -31,29 +27,10 @@ const TodoList = () => {
   return (
     <>
       <div>
-        {errorMessageDelete && (
-          <ErrorComponent
-            message={
-              'We can not delete your to-dos, please check your network.'
-            }
-          />
-        )}
-        {errorMessageUpdate && (
-          <ErrorComponent
-            message={'We can not update your todos, please check your network '}
-          />
-        )}
         <ul>
           <div className="my-todo-list-style">
             {sortedTodos.map((todo) => (
-              <MyTodoListElement
-                setErrorMessageUpdate={setmessageErrorUpdate}
-                setErrorDeleteMessage={setmessageErrorDelete}
-                myTodoText={todo.title}
-                date={todo.due_date}
-                todo={todo}
-                key={todo.id}
-              />
+              <MyTodoListElement todo={todo} key={todo.id} />
             ))}
           </div>
         </ul>
