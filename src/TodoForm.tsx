@@ -41,7 +41,6 @@ export const TodoForm = () => {
     setDate(e.target.value);
   };
 
-  console.log();
   return (
     <>
       <div className="div-background-input">

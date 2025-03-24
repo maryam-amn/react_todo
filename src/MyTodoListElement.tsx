@@ -59,9 +59,7 @@ const MyTodoListElement = ({ todo }: { todo: Todo }) => {
       await fetchPatch(newTodo);
       updateTodo(newTodo);
       errorMessage(null);
-    } catch (error) {
-      // The patch fails
-      console.log(error);
+    } catch {
       setIsChecked(todo.done);
       errorMessage('we can not checked you todo, check you network');
     }

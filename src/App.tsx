@@ -9,13 +9,20 @@ import { useTodoStore } from './useTodoStore.ts';
 const App = () => {
   const getFetch = useTodoStore((state) => state.getAllMyListFromGet);
 
+  const error = useTodoStore((state) => state.error);
+  const errorMessage = useTodoStore((state) => state.errormessage);
+
   useEffect(() => {
     const getTodoFromTheAPI = async () => {
       await fetchData(getFetch);
     };
-    getTodoFromTheAPI().then((r) => console.log(r));
-  }, [getFetch]);
-  const error = useTodoStore((state) => state.error);
+    try {
+      getTodoFromTheAPI();
+      errorMessage(null);
+    } catch {
+      errorMessage('We cannot get all the to-do, please  check your network');
+    }
+  }, [getFetch, errorMessage]);
 
   return (
     <>
