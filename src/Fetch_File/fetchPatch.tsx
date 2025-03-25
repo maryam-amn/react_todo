@@ -1,18 +1,13 @@
 import { Todo } from '../Todo.ts';
 
-export async function fetchPatch(
-  todo: Todo,
-  isChecked: boolean,
-  title: string,
-  dueDate: string,
-) {
+export async function fetchPatch(todo: Todo) {
   await fetch(`https://api.todos.in.jt-lab.ch/todos?id=eq.${todo.id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      done: isChecked,
-      title: title,
-      due_date: dueDate || null,
+      done: todo.done,
+      title: todo.title,
+      due_date: todo.due_date,
     }),
   });
 }

@@ -87,8 +87,7 @@ li div {
   display: flex;
   flex-direction: row;
 }
-p {
+h3 {
   text-align: center;
   color: #880808;
-  font-size: larger;
 }

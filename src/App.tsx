@@ -1,76 +1,35 @@
 import './App.css';
 import { TodoForm } from './TodoForm.tsx';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TodoList from './TodoList.tsx';
-import { Todo } from './Todo.ts';
-import { fetchPost } from './Fetch_File/fetchPost.tsx';
+
 import { fetchData } from './Fetch_File/fetchGet.tsx';
-import ErrorComponent from './ErrorComponent.tsx';
+import { useTodoStore } from './useTodoStore.ts';
 
 const App = () => {
-  const [listTodo, setlistTodo] = useState<Todo[]>([]);
-  const [sorting, setSorting] = useState<string>('name');
-  const [messageErrorAddToDo, setmessageErrorAddToDo] =
-    useState<boolean>(false);
-  let sortedTodos: Todo[];
+  const getFetch = useTodoStore((state) => state.getAllMyListFromGet);
 
-  const addToMyListAndToTheAPI = async (content: string, dueDate: string) => {
-    try {
-      const newList: Todo = {
-        title: content,
-        due_date: dueDate,
-        content: content,
-        id: content,
-        done: false,
-      };
-      await fetchPost(content, dueDate);
-      setlistTodo([...listTodo, newList]);
-      setmessageErrorAddToDo(false);
-    } catch {
-      setmessageErrorAddToDo(true);
-    }
-  };
-  const deleteFromMyList = (todo: Todo) => {
-    setlistTodo((todos) => todos.filter((t) => t.id !== todo.id));
-  };
+  const error = useTodoStore((state) => state.error);
+  const errorMessage = useTodoStore((state) => state.errormessage);
 
   useEffect(() => {
     const getTodoFromTheAPI = async () => {
-      await fetchData(setlistTodo);
+      await fetchData(getFetch);
     };
-    getTodoFromTheAPI().then((r) => console.log(r));
-  }, []);
-  console.log(listTodo);
+    try {
+      getTodoFromTheAPI();
+      errorMessage(null);
+    } catch {
+      errorMessage('We cannot get all the to-do, please  check your network');
+    }
+  }, [getFetch, errorMessage]);
 
-  const changeSorting = (sortType: string) => {
-    setSorting(sortType);
-  };
-  if (sorting === 'due-date') {
-    sortedTodos = [...listTodo].sort((a, b) => {
-      return new Date(b.due_date).getTime() - new Date(a.due_date).getTime();
-    });
-  } else if (sorting === 'name') {
-    sortedTodos = [...listTodo].sort((a, b) => a.title.localeCompare(b.title));
-  } else if (sorting === 'done') {
-    sortedTodos = [...listTodo].sort((a, b) => (b.done > a.done ? 1 : -1));
-    sortedTodos = sortedTodos.filter((todo) => todo.done);
-  } else if (sorting === 'undone') {
-    sortedTodos = [...listTodo].sort((a, b) => (a.done > b.done ? 1 : -1));
-    sortedTodos = sortedTodos.filter((todo) => !todo.done);
-  } else {
-    sortedTodos = [...listTodo];
-  }
   return (
     <>
       <h1 className="content"> My To do list </h1>
-
-      <TodoForm addTodo={addToMyListAndToTheAPI} sorting={changeSorting} />
-      {messageErrorAddToDo && (
-        <ErrorComponent
-          message={'We cannot add your to-do, please  check your network '}
-        />
-      )}
-      <TodoList todoList={sortedTodos} deleteTodo={deleteFromMyList} />
+      <TodoForm />
+      {error && <h3 className={'error'}>{error}</h3>}
+      <TodoList />
     </>
   );
 };
